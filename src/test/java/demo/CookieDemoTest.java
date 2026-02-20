@@ -23,7 +23,8 @@ public class CookieDemoTest {
   }
   @AfterMethod(alwaysRun=true)
   public void tearDown() {
-	  
+	  if(driver!=null){
+		  driver.quit();
   }
   @Test
   public void addAndDeleteCookie() {
