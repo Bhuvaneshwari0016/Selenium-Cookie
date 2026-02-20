@@ -25,7 +25,7 @@ public class CookieDemoTest {
   public void tearDown() {
 	  if(driver!=null){
 		  driver.quit();
-  }
+  }}
   @Test
   public void addAndDeleteCookie() {
 	 // Cookie mycookie=new Cookie("traineeCookie","Bhuvana");
