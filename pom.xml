@@ -78,11 +78,6 @@
         <version>2.0.16</version>
         <scope>test</scope>
     </dependency>
-    <dependency>
-    	<groupId>com.mock.com</groupId>
-    	<artifactId>MockServerTest</artifactId>
-    	<version>0.0.1-SNAPSHOT</version>
-    </dependency>
 </dependencies>
 
 
