@@ -1,0 +1,61 @@
+name: Maven Selenium Tests
+
+on:
+  push:
+    branches: [ main, master ]
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Temurin JDK 11
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '11'
+          cache: maven
+
+      - name: Install Google Chrome
+        uses: browser-actions/setup-chrome@v1
+        with:
+          chrome-version: stable
+
+      - name: Show Chrome version
+        run: |
+          google-chrome --version || true
+          which google-chrome || true
+
+      # Debug: make sure testng.xml is actually present
+      - name: Verify testng.xml presence
+        run: |
+          pwd
+          ls -la
+          [ -f testng.xml ] && echo "Found testng.xml" || (echo "testng.xml NOT FOUND" && exit 1)
+          echo "---- testng.xml ----"
+          cat -n testng.xml
+
+      - name: Validate dependency resolution (fail fast)
+        run: mvn -B -U -DskipTests dependency:resolve
+
+      # Run non-headless Chrome using a virtual display
+      - name: Build & run TestNG suite with Xvfb
+        run: |
+          xvfb-run --auto-servernum --server-args="-screen 0 1920x1080x24" \
+          mvn -B -V test
+
+      - name: Upload surefire reports
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: surefire-reports
+          path: |
+            **/target/surefire-reports/**
+            **/target/*.log
