@@ -1,0 +1,9 @@
+
+<suite name="Selenium Suite" verbose="1" parallel="false">
+  <test name="AllTests">
+    <classes>
+      <class name="demo.CookieDemoTest"/>
+      <class name="demo.LocalCapabilities"/>
+    </classes>
+  </test>
+</suite>
